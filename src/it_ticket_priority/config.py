@@ -11,6 +11,7 @@ MODEL_DIR = PROJECT_ROOT / "models"
 ARTIFACT_DIR = PROJECT_ROOT / "artifacts"
 ASSET_DIR = PROJECT_ROOT / "assets"
 
+
 def _configured_path(environment_variable: str, default: Path) -> Path:
     configured = os.getenv(environment_variable)
     if not configured:
