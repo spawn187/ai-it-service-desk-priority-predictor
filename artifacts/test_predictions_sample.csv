@@ -1,0 +1,6 @@
+description,category,channel,service_criticality,site,affected_users,vip_user,outage_indicator,security_indicator,business_hours,related_incidents_30d,actual_priority,predicted_priority
+"Teams calls are dropping and audio is distorted. Several users are affected without a complete outage.",collaboration,portal,low,warehouse_south,28,0,1,0,1,1,P3,P3
+"Access to an application is requested. Assistance is needed when capacity allows.",service_request,email,low,regional_office,1,0,0,0,0,0,P4,P4
+"Ransomware-like file changes were observed. There is a complete service outage across multiple sites.",security,portal,medium,headquarters,3,0,0,1,0,3,P2,P1
+"High packet loss is affecting the site. A major business process is blocked with no practical workaround.",network,portal,medium,warehouse_south,7,0,0,0,1,2,P2,P2
+"Endpoint protection detected suspicious activity. Business operations are stopped for all users.",security,portal,medium,headquarters,167,0,1,0,1,2,P1,P1

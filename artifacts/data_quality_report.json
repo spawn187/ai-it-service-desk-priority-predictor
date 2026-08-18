@@ -1,0 +1,21 @@
+{
+  "input_rows": 30180,
+  "output_rows": 30000,
+  "duplicate_rows_removed": 180,
+  "rows_with_missing_description": 505,
+  "invalid_target_rows_removed": 0,
+  "missing_values_by_column": {
+    "related_incidents_30d": 552,
+    "business_hours": 0,
+    "affected_users": 565,
+    "service_criticality": 527,
+    "outage_indicator": 0,
+    "priority": 0,
+    "category": 518,
+    "security_indicator": 0,
+    "channel": 549,
+    "site": 508,
+    "vip_user": 0,
+    "description": 505
+  }
+}

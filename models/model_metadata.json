@@ -1,0 +1,29 @@
+{
+  "model_name": "logistic_regression",
+  "model_version": "1.0.0",
+  "trained_at_utc": "2026-08-18T17:53:25.272938+00:00",
+  "selection_rationale": "Selected for high P1 recall, probability output, explainability, low inference cost, and operational simplicity.",
+  "training_config": {"rows":30000,"seed":42,"test_size":0.2,"max_text_features":12000,"tune_logistic_regression":true,"model_path":"models/priority_model.joblib","metadata_path":"models/model_metadata.json","artifact_dir":"artifacts","asset_dir":"assets"},
+  "data": {
+    "input_rows": 30180,
+    "clean_rows": 30000,
+    "training_rows": 24000,
+    "test_rows": 6000,
+    "priority_distribution": {"P1":0.042,"P2":0.143,"P3":0.405,"P4":0.41},
+    "quality_report": {"input_rows":30180,"output_rows":30000,"duplicate_rows_removed":180,"rows_with_missing_description":505,"invalid_target_rows_removed":0,"missing_values_by_column":{"related_incidents_30d":552,"business_hours":0,"affected_users":565,"service_criticality":527,"outage_indicator":0,"priority":0,"category":518,"security_indicator":0,"channel":549,"site":508,"vip_user":0,"description":505}}
+  },
+  "metrics": {
+    "accuracy":0.8553333333333333,"macro_f1":0.8316426083033295,"weighted_f1":0.8563463380594473,"p1_precision":0.7089783281733746,"p1_recall":0.9087301587301587,
+    "per_class":{"P1":{"precision":0.7089783281733746,"recall":0.9087301587301587,"f1_score":0.7965217391304348,"support":252},"P2":{"precision":0.7518557794273595,"recall":0.8263403263403264,"f1_score":0.787340366463076,"support":858},"P3":{"precision":0.8564124414145718,"recall":0.8271604938271605,"f1_score":0.8415323424743563,"support":2430},"P4":{"precision":0.9149560117302052,"recall":0.8878048780487805,"f1_score":0.9011759851454508,"support":2460}},
+    "confusion_matrix":[[229,23,0,0],[83,709,62,4],[10,211,2010,199],[1,0,275,2184]]
+  },
+  "model_comparison": [
+    {"model":"logistic_regression","accuracy":0.8553333333333333,"macro_f1":0.8316426083033295,"weighted_f1":0.8563463380594473,"p1_precision":0.7089783281733746,"p1_recall":0.9087301587301587,"fit_seconds":11.154},
+    {"model":"sgd_log_loss","accuracy":0.843,"macro_f1":0.813584376966348,"weighted_f1":0.8435964329034444,"p1_precision":0.6930091185410334,"p1_recall":0.9047619047619048,"fit_seconds":2.092},
+    {"model":"linear_svm","accuracy":0.8531666666666666,"macro_f1":0.8359805756212868,"weighted_f1":0.8538641820686849,"p1_precision":0.7585034013605442,"p1_recall":0.8849206349206349,"fit_seconds":3.905}
+  ],
+  "tuning": {"logistic_regression":{"classifier__C":0.5,"cv_macro_f1":0.8395323234155097,"cv_p1_recall":0.9087301587301587}},
+  "runtime": {"python":"3.13.5","scikit_learn":"1.8.0","pandas":"2.2.3","numpy":"2.3.5"},
+  "selected_model_summary": {"model":"logistic_regression","accuracy":0.8553333333333333,"macro_f1":0.8316426083033295,"weighted_f1":0.8563463380594473,"p1_precision":0.7089783281733746,"p1_recall":0.9087301587301587,"fit_seconds":11.154},
+  "feature_columns": ["description","category","channel","service_criticality","site","affected_users","vip_user","outage_indicator","security_indicator","business_hours","related_incidents_30d"]
+}

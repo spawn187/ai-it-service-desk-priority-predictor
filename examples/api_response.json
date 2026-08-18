@@ -1,0 +1,12 @@
+{
+  "predicted_priority": "P1",
+  "confidence": 0.9962,
+  "probabilities": {"P1": 0.9962, "P2": 0.0038, "P3": 0.0, "P4": 0.0},
+  "requires_human_review": true,
+  "top_contributors": [
+    {"feature": "numeric: outage indicator", "contribution": 3.3143},
+    {"feature": "numeric: affected users", "contribution": 2.2231},
+    {"feature": "metadata: service criticality mission critical", "contribution": 2.0723}
+  ],
+  "model_version": "1.0.0"
+}

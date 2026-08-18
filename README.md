@@ -7,30 +7,21 @@
 [![Docker](https://img.shields.io/badge/Container-Docker-2496ED)](https://www.docker.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-An end-to-end machine learning engineering portfolio project that predicts **P1-P4 priority** for IT service desk tickets using free-text descriptions and operational metadata.
+An end-to-end **machine learning engineering portfolio project** that predicts **P1-P4 priority** for IT service desk tickets using NLP and operational metadata.
 
-The project is deliberately built as more than a notebook. It includes reproducible synthetic data generation, preprocessing, feature engineering, model comparison, explainable inference, a FastAPI service, a Streamlit demo, Docker, tests, CI, experiment tracking support, a model card, and an interview talk track.
+This is deliberately more than a notebook: it includes reproducible synthetic data generation, data-quality controls, feature engineering, candidate-model comparison, explainable inference, FastAPI, Streamlit, Docker, automated tests, GitHub Actions, optional MLflow tracking, a model card, architecture documentation, and an interview talk track.
 
-> **Data safety:** the repository contains no real company, employee, customer, or ticket data. All records are reproducibly generated synthetic examples.
+> **Privacy by design:** no real company, employee, customer, host, or service-desk data is included.
 
 ## Business problem
 
-Manual ticket prioritization is slow and inconsistent. A genuine outage or security incident assigned as P3 can delay escalation and breach an SLA, while excessive P1 assignments create alert fatigue and waste specialist capacity.
+Manual ticket prioritization is slow and inconsistent. Missing a genuine P1 outage or security incident can delay escalation, while too many P1 assignments create alert fatigue. The system therefore optimizes for strong critical-incident recall while keeping a human analyst in control.
 
-This solution supports analysts by estimating ticket priority from:
+**Decision policy:** every predicted P1 and every prediction below 65% confidence requires human review.
 
-- the ticket description;
-- category and submission channel;
-- service criticality and site;
-- number of affected users;
-- outage, security, VIP, and business-hours indicators;
-- recent related-incident volume.
+## Reference results
 
-The production decision policy is intentionally conservative: **every predicted P1 and every low-confidence prediction requires human review**.
-
-## Reproducible results
-
-The committed model was trained from a deterministic **30,000-ticket synthetic dataset**. The generator also inserted 180 duplicate rows to test the cleaning pipeline; these were removed before modeling. The final split contained 24,000 training and 6,000 holdout records.
+The reproducible reference experiment uses **30,000 clean synthetic tickets** and a stratified **6,000-ticket holdout set**.
 
 | Model | Accuracy | Macro F1 | P1 precision | P1 recall |
 |---|---:|---:|---:|---:|
@@ -38,39 +29,17 @@ The committed model was trained from a deterministic **30,000-ticket synthetic d
 | SGD classifier | 84.30% | 81.36% | 69.30% | 90.48% |
 | Linear SVM | 85.32% | **83.60%** | **75.85%** | 88.49% |
 
-Logistic regression was selected even though the linear SVM achieved a slightly higher macro F1-score. The production choice provides:
+Logistic regression is selected because the operating requirement is not simply to maximize one leaderboard metric. It provides the strongest P1 recall among the high-performing candidates, native probabilities for confidence-based routing, inspectable coefficients, and inexpensive inference.
 
-1. the strongest P1 recall among the high-performing candidates;
-2. native class probabilities for confidence-based routing;
-3. inspectable coefficients for local explanations;
-4. low inference latency and modest infrastructure cost;
-5. a simpler operational path than a transformer model.
+![Candidate model comparison](assets/model_comparison.svg)
 
-![Candidate model comparison](assets/model_comparison.png)
-
-![Confusion matrix](assets/confusion_matrix.png)
+![Confusion matrix](assets/confusion_matrix.svg)
 
 ## Example prediction
 
-A mission-critical warehouse outage is predicted as **P1**, accompanied by class probabilities, a human-review flag, and the strongest positive feature contributions.
+![Example prediction](assets/example_prediction.svg)
 
-![Example prediction](assets/example_prediction.png)
-
-```json
-{
-  "predicted_priority": "P1",
-  "confidence": 0.9962,
-  "requires_human_review": true,
-  "top_contributors": [
-    {"feature": "numeric: outage indicator", "contribution": 3.3143},
-    {"feature": "numeric: affected users", "contribution": 2.2231},
-    {
-      "feature": "metadata: service criticality mission critical",
-      "contribution": 2.0723
-    }
-  ]
-}
-```
+A mission-critical warehouse outage is predicted as P1, but the API still sets `requires_human_review=true`. The model is a decision-support component, not an autonomous incident manager.
 
 ## Architecture
 
@@ -78,22 +47,22 @@ A mission-critical warehouse outage is predicted as **P1**, accompanied by class
 flowchart LR
     A[ITSM ticket] --> B[Schema validation]
     B --> C{Feature pipeline}
-    C --> D[TF-IDF unigrams and bigrams]
-    C --> E[One-hot categorical metadata]
-    C --> F[Imputed and scaled numeric signals]
+    C --> D[TF-IDF text]
+    C --> E[One-hot metadata]
+    C --> F[Imputed + scaled numeric signals]
     D --> G[Balanced logistic regression]
     E --> G
     F --> G
-    G --> H[Priority probabilities P1-P4]
+    G --> H[P1-P4 probabilities]
     H --> I{Decision policy}
     I -->|P1 or confidence below 65%| J[Human analyst review]
     I -->|Otherwise| K[Normal triage workflow]
     H --> L[FastAPI]
-    H --> M[Streamlit demo]
-    H --> N[Metrics and drift monitoring]
+    H --> M[Streamlit]
+    H --> N[Monitoring + drift]
 ```
 
-See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the component and production deployment design.
+See [Architecture and Deployment Design](docs/ARCHITECTURE.md).
 
 ## Repository structure
 
@@ -101,26 +70,23 @@ See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the component and productio
 .
 ├── api/                         # FastAPI service
 ├── app/                         # Streamlit interactive demo
-├── artifacts/                   # Metrics, comparisons, experiment records
-├── assets/                      # Evaluation and portfolio visuals
-├── data/sample/                 # Small inspectable data sample
-├── docs/                        # Architecture, report, model card, interview notes
-├── examples/                    # API request and response examples
-├── models/                      # Serialized production pipeline and metadata
-├── notebooks/                   # Exploratory analysis notebook
+├── artifacts/                   # Reproducible reference metrics
+├── assets/                      # Portfolio visuals
+├── data/sample/                 # Small inspectable synthetic sample
+├── docs/                        # Architecture, model card, report, interview notes
+├── examples/                    # API request/response examples
+├── models/                      # Model metadata; binary artifact generated locally
+├── notebooks/                   # Exploratory analysis
 ├── scripts/                     # Data, training, evaluation, prediction CLIs
 ├── src/it_ticket_priority/      # Reusable Python package
-├── tests/                       # Generator, model, inference, and API tests
-├── .github/workflows/ci.yml     # Lint, tests, coverage, training smoke test
+├── tests/                       # Data, pipeline, inference, API tests
+├── .github/workflows/ci.yml     # Lint, test, training smoke test
 ├── Dockerfile
 ├── docker-compose.yml
-├── Makefile
 └── pyproject.toml
 ```
 
 ## Quick start
-
-### 1. Clone and create an environment
 
 ```bash
 git clone https://github.com/spawn187/ai-it-service-desk-priority-predictor.git
@@ -134,34 +100,35 @@ python -m pip install --upgrade pip
 python -m pip install -e ".[dev]"
 ```
 
-The repository already includes a trained synthetic-data model. A local prediction can be executed immediately:
+### Reproduce the experiment and create the model
+
+```bash
+python scripts/generate_data.py --rows 30000 --seed 42
+python scripts/train_model.py --data data/synthetic_tickets.csv
+```
+
+Or:
+
+```bash
+make data
+make train
+```
+
+Training generates the local `models/priority_model.joblib` artifact and refreshes evaluation outputs. The binary model is intentionally not versioned in Git; the repository remains reproducible from source.
+
+### Run one prediction
 
 ```bash
 python scripts/predict_example.py
 ```
 
-### 2. Reproduce the full experiment
-
-```bash
-python scripts/generate_data.py --rows 30000
-python scripts/train_model.py --data data/synthetic_tickets.csv
-```
-
-Convenience targets are also available:
-
-```bash
-make data
-make train
-make test
-```
-
-### 3. Run the API
+### Run the API
 
 ```bash
 uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-Open the interactive OpenAPI documentation at `http://localhost:8000/docs`.
+Open `http://localhost:8000/docs` for interactive OpenAPI documentation.
 
 ```bash
 curl -X POST "http://localhost:8000/predict" \
@@ -169,24 +136,17 @@ curl -X POST "http://localhost:8000/predict" \
   --data @examples/api_request.json
 ```
 
-Available endpoints:
-
-| Endpoint | Method | Purpose |
-|---|---|---|
-| `/health` | GET | Readiness and model-load status |
-| `/model-info` | GET | Model metadata, metrics, schema, and runtime |
-| `/predict` | POST | Priority prediction and explanation |
-| `/docs` | GET | Interactive OpenAPI documentation |
-
-### 4. Run the Streamlit dashboard
+### Run the Streamlit demo
 
 ```bash
 streamlit run app/streamlit_app.py
 ```
 
-Open `http://localhost:8501` and enter a ticket interactively.
+Open `http://localhost:8501`.
 
-### 5. Run with Docker
+### Run with Docker
+
+Train the model once, then:
 
 ```bash
 docker compose up --build
@@ -197,88 +157,57 @@ docker compose up --build
 
 ## ML workflow
 
-### Synthetic data generation
+### 1. Reproducible synthetic data
 
-The generator creates realistic but fictional tickets with configurable missingness, duplicates, typographical noise, class imbalance, and imperfect relationships between text and labels. This prevents the portfolio from depending on confidential ticket exports and makes every result reproducible from seed `42`.
+The generator creates realistic but fictional tickets with controlled class imbalance, missing values, duplicates, typographical noise, and imperfect relationships between text and labels. Seed `42` reproduces the reference experiment.
 
-### Data quality controls
+![Priority distribution](assets/class_distribution.svg)
 
-- required-column validation;
-- duplicate removal;
-- target-label validation;
-- empty-text handling;
-- categorical fallback values;
-- median numerical imputation;
-- leakage review and explicit feature contract.
+### 2. Leakage-safe preprocessing
 
-### Feature engineering
-
-- TF-IDF word unigrams and bigrams for ticket text;
+- TF-IDF word unigrams and bigrams for ticket descriptions;
 - one-hot encoding for category, channel, service criticality, and site;
-- imputation and scaling for numerical and Boolean operational features;
-- a single scikit-learn `Pipeline` and `ColumnTransformer` to prevent train/test preprocessing leakage.
+- median imputation and scaling for numerical/Boolean features;
+- a single scikit-learn `Pipeline` and `ColumnTransformer` fitted only on training data.
 
-### Model training and selection
+Post-decision fields such as SLA outcome, resolver group, resolution code, and manual override are excluded.
 
-The training process compares logistic regression, linear SVM, and SGD classification. Logistic-regression regularization is selected through three-fold stratified cross-validation using a business-oriented combination of P1 recall and macro F1.
+### 3. Business-oriented model selection
 
-Class weights approximately compensate for the imbalanced priority distribution and add an extra penalty for missed P1 incidents. This is deliberate: a missed critical outage is usually more costly than an unnecessary analyst review.
+The pipeline compares logistic regression, linear SVM, and SGD. Class weighting makes missed P1 incidents more expensive than routine errors. The final choice balances P1 recall, probability support, explainability, performance, and operational simplicity.
 
-### Explainability
+### 4. Explainable inference
 
-For the selected logistic-regression class, the API multiplies the transformed input values by the relevant model coefficients and returns the largest positive local contributions. This is not a causal explanation, but it provides a useful operational reason trace for analysts and interview demonstrations.
+For logistic regression, the API returns the largest positive local feature contributions for the predicted class. This explains model mechanics, not causality, and is intentionally presented with that limitation.
 
-### MLOps foundations
+### 5. MLOps foundations
 
-- serialized preprocessing-and-model pipeline with `joblib`;
-- model metadata, data-quality report, metrics, and comparison artifacts;
-- optional MLflow logging through `MLFLOW_TRACKING_URI`;
-- API health and model-information endpoints;
-- Dockerized API and dashboard;
+- deterministic generation and training configuration;
+- metadata and reference evaluation artifacts;
+- optional MLflow experiment logging;
+- FastAPI health/model-info endpoints;
+- Docker and Docker Compose;
 - GitHub Actions linting, tests, coverage, and training smoke test;
-- documented production monitoring and retraining strategy.
+- documented drift, monitoring, rollback, security, and retraining strategy.
 
-To enable MLflow:
-
-```bash
-python -m pip install -r requirements-mlflow.txt
-export MLFLOW_TRACKING_URI=http://localhost:5000
-python scripts/train_model.py --rows 30000
-```
-
-## Testing and quality
+## Quality checks
 
 ```bash
-pytest -q --cov=it_ticket_priority --cov-report=term-missing
 ruff check .
+pytest -q --cov=it_ticket_priority --cov-report=term-missing
 ```
 
-The test suite covers:
-
-- deterministic synthetic-data generation;
-- class distribution and schema validation;
-- duplicate removal;
-- end-to-end pipeline training;
-- probability and explanation output;
-- FastAPI request validation and prediction.
+The suite covers deterministic data generation, schema/duplicate handling, end-to-end pipeline training, probability output, local explanations, and API validation.
 
 ## Production hardening roadmap
 
-This repository demonstrates an engineering pattern, not a production authorization to auto-prioritize real incidents. A real implementation would require:
+A real rollout should begin in **shadow mode** and would require approved anonymized historical data, label-quality auditing, temporal validation, probability calibration, cost-based thresholds, PII redaction, authentication/authorization, drift monitoring, model registry controls, canary deployment, audit logging, rollback, and a manual-continuity path.
 
-- anonymized historical ticket validation and label-quality analysis;
-- probability calibration and threshold testing by business cost;
-- role-based access, API authentication, rate limits, and audit logging;
-- PII detection and redaction before model input or storage;
-- multilingual and site-specific evaluation;
-- shadow-mode deployment before workflow automation;
-- drift monitoring for text, features, predictions, and analyst overrides;
-- rollback, model registry, canary deployment, and periodic retraining;
-- security, privacy, legal, and change-management approval.
+See [Roadmap](docs/ROADMAP.md).
 
 ## Documentation
 
-- [Technical report](docs/TECHNICAL_REPORT.md)
+- [Comprehensive technical report](docs/TECHNICAL_REPORT.md)
 - [Architecture and deployment design](docs/ARCHITECTURE.md)
 - [Model card](docs/MODEL_CARD.md)
 - [Data dictionary](docs/DATA_DICTIONARY.md)
@@ -287,11 +216,11 @@ This repository demonstrates an engineering pattern, not a production authorizat
 
 ## Limitations
 
-- Metrics are measured on generated data, not on a real production distribution.
-- The synthetic language is less varied than genuine service-desk text.
+- Reference metrics are measured on generated data, not a real production distribution.
+- Synthetic language is less varied than genuine service-desk text.
+- Class probabilities are not calibrated on real operational outcomes.
 - Feature contributions explain model mechanics, not causality.
 - The model does not replace incident-management judgment.
-- P1 precision is intentionally lower than P1 recall because the system is designed to prefer review over a missed critical incident.
 
 ## Author
 

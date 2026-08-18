@@ -1,0 +1,22 @@
+{
+  "run_name": "ticket-priority-1.0.0",
+  "params": {
+    "rows": 30000,
+    "test_size": 0.2,
+    "max_text_features": 12000,
+    "selected_model": "logistic_regression",
+    "logistic_c": 0.5
+  },
+  "metrics": {
+    "accuracy": 0.8553333333333333,
+    "macro_f1": 0.8316426083033295,
+    "weighted_f1": 0.8563463380594473,
+    "p1_precision": 0.7089783281733746,
+    "p1_recall": 0.9087301587301587
+  },
+  "artifacts": [
+    "artifacts/metrics.json",
+    "artifacts/model_comparison.csv",
+    "assets/confusion_matrix.png"
+  ]
+}

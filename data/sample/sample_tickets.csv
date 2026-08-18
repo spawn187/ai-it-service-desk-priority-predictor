@@ -1,0 +1,6 @@
+ticket_id,description,category,channel,service_criticality,site,affected_users,vip_user,outage_indicator,security_indicator,business_hours,related_incidents_30d,priority
+INC-1000001,"The logistics application cannot process orders at warehouse north. All warehouse processing is blocked. Reported through phone.",business_application,phone,mission_critical,warehouse_north,180,0,1,0,1,6,P1
+INC-1000002,"Account is locked after repeated login attempts at headquarters. The issue has high operational impact. Reported through portal.",identity_access,portal,high,headquarters,14,1,0,0,1,2,P2
+INC-1000003,"Teams calls are dropping and audio is distorted at regional office. The service is degraded but core operations continue.",collaboration,email,medium,regional_office,8,0,0,0,1,1,P3
+INC-1000004,"Software installation is requested for remote user. This is a routine request with no service interruption.",service_request,portal,low,remote_user,1,0,0,0,1,0,P4
+INC-1000005,"Endpoint protection detected suspicious activity at headquarters. Multiple teams are affected and a critical function is unavailable.",security,monitoring,high,headquarters,32,0,0,1,1,4,P2
