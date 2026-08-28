@@ -1,0 +1,13 @@
+{
+  "description": "Warehouse north has lost WAN and DNS connectivity. All scanning and order processing is blocked.",
+  "category": "network",
+  "channel": "monitoring",
+  "service_criticality": "mission_critical",
+  "site": "warehouse_north",
+  "affected_users": 220,
+  "vip_user": 0,
+  "outage_indicator": 1,
+  "security_indicator": 0,
+  "business_hours": 1,
+  "related_incidents_30d": 6
+}

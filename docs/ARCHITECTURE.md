@@ -2,179 +2,330 @@
 
 ## 1. System context
 
-The application is a decision-support component for an IT service management workflow. It accepts a newly created ticket, validates the request schema, transforms text and metadata through the same pipeline used during training, and returns a predicted priority from P1 to P4. The response also contains class probabilities, a human-review flag, and local feature contributions.
+The application is a human-in-the-loop decision-support component for an IT service-management workflow. It accepts a newly created ticket, validates and sanitizes the request, predicts P1-P4 priority, retrieves approved runbook evidence, constructs an auditable prompt package, validates generated advice, re-applies application policy, and returns a structured decision to an analyst or ITSM platform.
 
-The model does not directly close, route, or escalate tickets. In the intended operating model, the ITSM platform or service desk analyst remains the system of record and final decision-maker.
+The solution does not close, route, escalate, restart, isolate, disable, delete, or otherwise change a production service. The ITSM platform remains the system of record and the analyst or incident manager remains the decision-maker.
 
 ```mermaid
 C4Context
-    title IT Service Desk Priority Prediction - Context
-    Person(analyst, "Service desk analyst", "Creates and reviews tickets")
+    title AI Service Desk Copilot - Context
+    Person(analyst, "Service desk analyst", "Reviews priority, evidence and advice")
     System(itsm, "ITSM platform", "Ticket system of record")
-    System_Boundary(ml, "Priority prediction solution") {
-        System(api, "Prediction API", "Validates and scores tickets")
-        System(model, "ML pipeline", "TF-IDF, metadata features, logistic regression")
-        System(monitoring, "Monitoring", "Latency, errors, drift, overrides")
+    System_Boundary(ai, "AI Service Desk Copilot") {
+        System(api, "FastAPI", "Validates requests and exposes decisions")
+        System(ml, "Priority ML pipeline", "P1-P4 probabilities and explanations")
+        System(rag, "Runbook retrieval", "Returns evidence IDs and excerpts")
+        System(prompt, "Prompt and policy layer", "Builds contract and enforces controls")
+        System(observe, "Evaluation and monitoring", "Quality, safety and operations")
     }
+    System_Ext(provider, "Optional structured-generation provider", "Returns JSON advice")
     Rel(analyst, itsm, "Works in")
     Rel(itsm, api, "Sends ticket features")
-    Rel(api, model, "Requests prediction")
-    Rel(api, itsm, "Returns priority, confidence, explanation")
-    Rel(api, monitoring, "Emits operational telemetry")
+    Rel(api, ml, "Requests priority")
+    Rel(api, rag, "Retrieves approved context")
+    Rel(api, prompt, "Builds and validates decision")
+    Rel(prompt, provider, "Optional structured JSON request")
+    Rel(api, itsm, "Returns priority, evidence, advice and review state")
+    Rel(api, observe, "Emits versions, hashes and telemetry")
 ```
 
-## 2. Repository component architecture
+## 2. Design principles
+
+- **Application-owned policy:** provider output cannot enable automation or suppress mandatory review.
+- **Least agency:** no execution tools are attached.
+- **Privacy by design:** no real employer data is committed; sensitive patterns are redacted before prompting.
+- **Separation of concerns:** classification, retrieval, prompting, generation, policy, and presentation are independent components.
+- **Structured contracts:** request and response models are validated by Pydantic.
+- **Evidence over fluency:** recommendations cite retrieved runbook evidence IDs.
+- **Reproducibility:** synthetic data, local retrieval, offline fallback, prompt hashes, and CI tests.
+- **Honest evaluation:** synthetic and deterministic results are labeled with their limits.
+- **Manual continuity:** service-desk work can continue without AI components.
+
+## 3. Component architecture
 
 | Component | Responsibility |
 |---|---|
 | `data_generator.py` | Produces deterministic synthetic tickets with imbalance, noise, missingness, and duplicates. |
-| `data_validation.py` | Enforces the feature contract and returns a data-quality report. |
-| `pipeline.py` | Builds the leakage-safe text, categorical, numeric, and classifier pipeline. |
-| `train.py` | Runs the split, cross-validation, candidate comparison, persistence, plots, and experiment logging. |
-| `inference.py` | Loads the artifact and returns probabilities, review policy, and local contributions. |
-| `api/main.py` | Exposes health, metadata, and prediction endpoints. |
-| `app/streamlit_app.py` | Provides an interview-friendly interactive demonstration. |
-| `tracking.py` | Logs runs to MLflow when configured, otherwise to local JSON. |
-| `tests/` | Covers generation, quality, training, inference, and API behavior. |
+| `data_validation.py` | Enforces the ML feature contract and returns data-quality evidence. |
+| `pipeline.py` | Builds leakage-safe text, categorical, numeric, and classifier transformations. |
+| `train.py` | Splits data, compares candidates, evaluates, persists artifacts, and logs runs. |
+| `inference.py` | Loads the classifier and returns probabilities, review policy, and local contributions. |
+| `copilot/security.py` | Normalizes input, redacts sensitive patterns, and detects injection signals. |
+| `copilot/retrieval.py` | Indexes Markdown runbook sections and returns stable evidence IDs. |
+| `copilot/prompting.py` | Builds versioned system/developer/data messages, schema, and hashes. |
+| `copilot/assistant.py` | Provides deterministic fallback and provider-neutral structured adapter. |
+| `copilot/orchestrator.py` | Coordinates the full workflow and re-applies application policy. |
+| `copilot/evaluation.py` | Runs deterministic prompt/RAG regression cases. |
+| `api/main.py` | Exposes health, metadata, prediction, and copilot endpoints. |
+| `app/` | Provides interview-friendly Streamlit demonstrations. |
+| `knowledge_base/runbooks/` | Contains representative, version-controlled grounding content. |
+| `prompts/` | Contains the prompt, schema, examples, baseline, and changelog. |
+| `tests/` | Covers ML, API, security, retrieval, prompting, orchestration, and policy. |
 
-## 3. Training flow
+![Architecture](../assets/copilot_architecture.svg)
+
+## 4. Training architecture
 
 ```mermaid
 flowchart TD
-    A[Generation configuration and random seed] --> B[30,000 synthetic tickets]
-    B --> C[Schema validation]
+    A[Generation configuration and seed] --> B[Synthetic tickets]
+    B --> C[Schema and quality validation]
     C --> D[Remove duplicates and invalid targets]
-    D --> E[Stratified 80/20 split]
+    D --> E[Stratified train/holdout split]
     E --> F[Fit preprocessing only on training data]
-    F --> G1[Logistic regression CV]
+    F --> G1[Balanced logistic regression]
     F --> G2[Linear SVM]
     F --> G3[SGD log-loss]
-    G1 --> H[Holdout evaluation]
+    G1 --> H[Cross-validation and holdout evaluation]
     G2 --> H
     G3 --> H
     H --> I[Business-oriented model selection]
     I --> J[Serialized pipeline]
-    I --> K[Metrics and comparison CSV]
+    I --> K[Metrics and metadata]
     I --> L[Confusion matrix and charts]
-    I --> M[Model metadata and model card]
 ```
 
 ### Leakage controls
 
-The train/test split happens before fitting TF-IDF, categorical encoding, numerical imputation, or scaling. All feature transformation is encapsulated in a scikit-learn `Pipeline` and `ColumnTransformer`. Post-prioritization information, analyst notes, resolution codes, and SLA outcomes are deliberately excluded because they would not exist at prediction time.
+- Split before fitting TF-IDF, encoding, imputation, or scaling.
+- Keep all transformations in one scikit-learn `Pipeline` and `ColumnTransformer`.
+- Exclude post-prioritization fields such as resolution, SLA outcome, and override.
+- Preserve the same serialized preprocessing for inference.
+- Require temporal validation before a real deployment.
 
-## 4. Inference flow
-
-1. The client submits a ticket to `POST /predict`.
-2. Pydantic validates types, ranges, string lengths, and unexpected fields.
-3. The serialized pipeline transforms the request.
-4. Logistic regression returns class probabilities.
-5. The highest-probability class becomes the proposed priority.
-6. The decision policy sets `requires_human_review=true` when:
-   - the proposed priority is P1; or
-   - maximum probability is below 0.65.
-7. Coefficient-based local feature contributions are calculated for the predicted class.
-8. The API returns a structured response.
+## 5. Copilot request flow
 
 ```mermaid
 sequenceDiagram
-    participant ITSM
+    participant Client as ITSM / Streamlit
     participant API
-    participant Validator
-    participant Model
+    participant Guard as Input guardrails
+    participant ML as Priority model
+    participant RAG as Runbook retriever
+    participant Prompt as Prompt builder
+    participant Gen as Offline / LLM adapter
+    participant Policy as Validator + policy
     participant Analyst
 
-    ITSM->>API: POST /predict
-    API->>Validator: Validate ticket schema
-    Validator-->>API: Valid feature payload
-    API->>Model: Transform and predict
-    Model-->>API: P1-P4 probabilities and contributions
-    alt P1 or confidence below threshold
-        API-->>ITSM: Prediction + human review required
-        ITSM->>Analyst: Request confirmation
-    else sufficient confidence
-        API-->>ITSM: Prediction for normal triage
-    end
+    Client->>API: POST /copilot/triage
+    API->>Guard: Validate, normalize, redact, scan
+    Guard-->>API: Sanitized ticket + guardrail report
+    API->>ML: Predict P1-P4
+    ML-->>API: Probabilities + explanation + review flag
+    API->>RAG: Search sanitized ticket and prediction context
+    RAG-->>API: Evidence IDs, scores and excerpts
+    API->>Guard: Scan retrieved context for injection
+    API->>Prompt: Build versioned messages + schema + hashes
+    Prompt-->>API: PromptPackage
+    API->>Gen: Generate structured advice
+    Gen-->>API: Candidate JSON
+    API->>Policy: Pydantic validation, citation filtering, review enforcement
+    Policy-->>API: CopilotDecision
+    API-->>Client: Priority, evidence, advice, controls and audit state
+    Client->>Analyst: Review and decide
 ```
 
-## 5. Container deployment
+## 6. Trust boundaries
 
-The supplied Docker image contains the Python package, model artifact, API, and dashboard. `docker-compose.yml` runs two services from the same image:
+### Ticket boundary
 
-- `api`: FastAPI on port 8000;
-- `dashboard`: Streamlit on port 8501.
+Ticket text is user-controlled and may contain secrets, personal data, malformed Unicode, prompt injection, or misleading operational claims. It is validated and sanitized before retrieval or prompting.
 
-The API service includes a health check. In a production build, the dashboard and API should be independently versioned and scaled, and the model artifact should be obtained from an approved model registry rather than baked into every image.
+### Knowledge boundary
 
-## 6. Azure-oriented production mapping
+Runbooks are version-controlled but still treated as untrusted runtime content. Retrieved fragments are scanned for instruction-like injection signals before inclusion.
 
-A production implementation could map the repository components to the following logical services:
+### Provider boundary
+
+An external model/provider is not trusted to enforce policy. It receives a constrained prompt and schema; its response is validated and policy-critical fields are re-applied outside the model.
+
+### Analyst boundary
+
+The analyst receives evidence, confidence, missing information, and policy decisions. The UI must not imply that the output is authoritative or that an action was executed.
+
+## 7. Prompt package and lineage
+
+Every prompt package includes:
+
+- prompt ID and semantic version;
+- system, developer, and user/data messages;
+- response JSON Schema;
+- allowed evidence IDs;
+- SHA-256 of sanitized effective input;
+- SHA-256 of version, messages, and schema.
+
+A production audit event should also include application commit, model artifact, corpus version, retriever configuration, provider deployment, request ID, reviewer action, and timestamps.
+
+## 8. Decision policy
+
+Mandatory analyst review is applied when any of the following is true:
+
+- predicted priority is P1;
+- model confidence is below 65%;
+- the ticket has a security indicator;
+- direct or indirect prompt-injection signal is detected;
+- no sufficiently relevant runbook evidence is retrieved.
+
+In all cases:
+
+- recommendations are advisory;
+- actions require approval;
+- `automation_allowed` is false;
+- provider output cannot weaken these rules.
+
+The 65% threshold is a transparent portfolio default, not a production-calibrated universal value.
+
+## 9. API contracts
+
+### `POST /predict`
+
+Returns:
+
+- predicted priority;
+- confidence;
+- P1-P4 probabilities;
+- human-review flag;
+- top positive feature contributions;
+- model version.
+
+### `POST /copilot/triage`
+
+Returns:
+
+- ML prediction;
+- guardrail report;
+- retrieved evidence;
+- structured advice;
+- prompt package and hashes;
+- application policy decisions.
+
+### System endpoints
+
+- `GET /health`
+- `GET /model-info`
+- `GET /`
+
+## 10. Local and container deployment
+
+The supplied Docker image copies the complete repository, installs the package, and can run the API or Streamlit dashboard. `docker-compose.yml` starts both interfaces.
+
+The model binary is generated locally before runtime. In production, immutable approved artifacts should come from a model registry rather than being built ad hoc or stored in a mutable container layer.
+
+## 11. Azure-oriented production mapping
 
 | Concern | Possible implementation |
 |---|---|
-| Model training and registry | Azure Machine Learning workspace and model registry |
-| Online inference | Managed online endpoint, Azure Container Apps, or AKS depending on scale and governance |
-| API identity | Microsoft Entra ID workload identity and OAuth 2.0 |
+| Training and registry | Azure Machine Learning and MLflow-compatible tracking |
+| Online API | Azure Container Apps, AKS, or approved managed endpoint |
+| Generative provider | Microsoft Foundry / Azure OpenAI structured output deployment |
+| Retrieval | Azure AI Search with tenant/document authorization and hybrid ranking |
+| Identity | Microsoft Entra workload identity and OAuth2/OIDC |
 | Secrets | Azure Key Vault |
-| Telemetry | Application Insights and Azure Monitor |
-| Data and artifacts | Versioned object storage with restricted access |
-| Asynchronous integration | Queue or service bus between ITSM and prediction workers |
-| CI/CD | GitHub Actions with environment approvals and federated identity |
-| Experiment tracking | MLflow-compatible tracking backend |
+| Network | Private endpoints, VNet integration, approved egress |
+| Telemetry | Application Insights, Azure Monitor, structured traces |
+| Audit and data | Restricted, encrypted, versioned storage |
+| Integration | Queue or Service Bus between ITSM and workers |
+| CI/CD | GitHub Actions with federated identity and environment approval |
+| Policy | Application policy service and organization change controls |
 
-This is an architectural option, not a claim that the portfolio repository is already deployed in Azure.
+This is a logical mapping, not a claim that the portfolio is already deployed in Azure.
 
-## 7. Monitoring design
+## 12. Production topology
 
-### Service health
+A production topology should separate:
 
-- request count and success rate;
-- P50, P95, and P99 latency;
-- container restarts and resource saturation;
-- schema-validation and inference errors;
-- model-load status and version.
+- public or internal ingress;
+- authenticated API;
+- prediction service;
+- retrieval service;
+- generation provider adapter;
+- policy and audit layer;
+- UI / ITSM integration;
+- model and prompt registries;
+- knowledge repository;
+- observability pipeline.
 
-### Model behavior
+Each component should have independent versioning, least-privilege identity, health checks, SLOs, and rollback.
 
-- input missingness and schema changes;
-- text-length and vocabulary drift;
-- category, site, and service-criticality distribution drift;
-- predicted-priority distribution;
-- confidence distribution;
-- analyst override rate;
-- delayed accuracy, macro F1, P1 precision, and P1 recall when labels arrive.
+## 13. Reliability and graceful degradation
 
-### Alert examples
+Recommended behavior:
 
-- P1 recall below the agreed threshold over a minimum labeled sample;
-- analyst override rate increasing materially from baseline;
-- confidence distribution shifting downward;
-- unexpected spike in P1 predictions;
-- feature or text drift beyond the approved limit;
-- API latency or error rate exceeding the service objective.
+- if the generative provider fails, return ML prediction and evidence or use an approved fallback;
+- if retrieval fails, force review and state that no evidence is available;
+- if the ML model fails, retain manual priority assignment;
+- if the complete AI service fails, ticket creation and manual triage continue;
+- never block a critical incident solely because an AI dependency is unavailable.
 
-## 8. Security and privacy
+Use timeouts, retries with bounds, circuit breaking, queues where needed, health probes, idempotent requests, and replayable integration messages.
 
-A real implementation must assume that ticket descriptions can contain names, email addresses, device identifiers, IP addresses, screenshots, and sensitive incident details. Production controls should therefore include:
+## 14. Monitoring
 
-- PII and secret redaction before logging or training;
-- encryption in transit and at rest;
-- least-privilege access to data, artifacts, and endpoints;
-- API authentication and authorization;
-- rate limiting and payload-size limits;
-- audit records for predictions, analyst decisions, and model versions;
-- retention and deletion policies;
-- dependency, image, and source-code scanning;
-- threat modeling for data poisoning, prompt-like text manipulation, and model extraction.
+### Runtime
 
-## 9. Reliability and rollback
+- availability, request rate, error rate, and latency percentiles;
+- model/provider load and timeout status;
+- fallback use;
+- resource saturation;
+- cost and token consumption.
 
-The ITSM system should remain functional when the prediction service is unavailable. The recommended behavior is to fall back to manual prioritization rather than block ticket creation. Deployments should support:
+### Input and safety
 
-- immutable model and image versions;
-- canary or shadow deployment;
-- fast rollback to the last approved artifact;
-- replayable integration messages;
-- idempotent prediction requests;
-- health probes and circuit breaking;
-- a documented manual override path.
+- validation failures;
+- input length and truncation;
+- redaction count and type;
+- direct/indirect injection signal rate;
+- category, site, language, and impact distribution.
+
+### Retrieval
+
+- top score and score distribution;
+- no-evidence rate;
+- document selection distribution;
+- expected-domain recall on sampled labeled cases;
+- runbook freshness and ownership.
+
+### ML and generative quality
+
+- priority and confidence distribution;
+- delayed accuracy, macro F1, P1 precision and recall;
+- calibration and analyst override;
+- schema success;
+- citation relevance;
+- unsupported-claim and prohibited-action rates;
+- acceptance, edit, and rejection rate.
+
+### Business
+
+- time to correct priority;
+- time to first useful response;
+- reassignment and escalation delay;
+- runbook adoption;
+- analyst satisfaction and trust calibration;
+- adoption and cost per assisted ticket.
+
+## 15. Security and privacy
+
+See `THREAT_MODEL.md`. Production controls include authentication, authorization, DLP, data minimization, private networking, encrypted storage, approved retention, managed secrets, signed artifacts, dependency and image scanning, audit integration, provider contracts, and incident response.
+
+## 16. Release and rollback
+
+Independent rollback units:
+
+- application version;
+- ML model artifact;
+- prompt version;
+- response schema;
+- runbook corpus;
+- retriever configuration;
+- provider deployment.
+
+Release progression:
+
+1. offline benchmark;
+2. shadow mode;
+3. analyst assist;
+4. constrained approved integration;
+5. operational service with monitoring and change control.
+
+Manual service-desk operation is the continuity path at every stage.

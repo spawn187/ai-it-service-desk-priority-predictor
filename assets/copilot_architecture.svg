@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+<defs>
+  <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+    <stop offset="0" stop-color="#07111f"/><stop offset="1" stop-color="#111827"/>
+  </linearGradient>
+  <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+    <path d="M0,0 L0,6 L9,3 z" fill="#94a3b8"/>
+  </marker>
+</defs>
+<rect width="1600" height="900" fill="url(#bg)"/>
+
+<text x="800" y="58" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="40" font-weight="800" fill="#f8fafc" text-anchor="middle">AI-Powered IT Service Desk Copilot</text>
+<text x="800" y="92" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="22" font-weight="500" fill="#94a3b8" text-anchor="middle">Hybrid ML + guarded RAG + prompt engineering + human decision</text>
+<rect x="70" y="155" width="300" height="165" rx="18" fill="#172033" stroke="#22d3ee" stroke-width="3"/>
+<text x="94" y="197" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="28" font-weight="700" fill="#f8fafc" text-anchor="start">1. Ticket intake</text>
+<text x="94" y="235" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="400" fill="#cbd5e1" text-anchor="start">Pydantic schema validation</text>
+<text x="94" y="266" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="400" fill="#cbd5e1" text-anchor="start">Unicode normalization</text>
+<text x="94" y="297" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="400" fill="#cbd5e1" text-anchor="start">PII / secret redaction</text>
+<text x="94" y="328" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="400" fill="#cbd5e1" text-anchor="start">Direct injection signals</text>
+<rect x="460" y="135" width="320" height="195" rx="18" fill="#172033" stroke="#60a5fa" stroke-width="3"/>
+<text x="484" y="177" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="28" font-weight="700" fill="#f8fafc" text-anchor="start">2. Explainable ML</text>
+<text x="484" y="215" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="400" fill="#cbd5e1" text-anchor="start">TF-IDF + metadata pipeline</text>
+<text x="484" y="246" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="400" fill="#cbd5e1" text-anchor="start">P1-P4 probabilities</text>
+<text x="484" y="277" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="400" fill="#cbd5e1" text-anchor="start">Local feature contributions</text>
+<text x="484" y="308" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="400" fill="#cbd5e1" text-anchor="start">Confidence review gate</text>
+<rect x="460" y="385" width="320" height="205" rx="18" fill="#172033" stroke="#a78bfa" stroke-width="3"/>
+<text x="484" y="427" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="28" font-weight="700" fill="#f8fafc" text-anchor="start">3. Approved knowledge</text>
+<text x="484" y="465" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="400" fill="#cbd5e1" text-anchor="start">Version-controlled runbooks</text>
+<text x="484" y="496" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="400" fill="#cbd5e1" text-anchor="start">Transparent TF-IDF retrieval</text>
+<text x="484" y="527" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="400" fill="#cbd5e1" text-anchor="start">Stable evidence IDs</text>
+<text x="484" y="558" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="400" fill="#cbd5e1" text-anchor="start">Indirect injection scan</text>
+<rect x="880" y="155" width="325" height="260" rx="18" fill="#172033" stroke="#f472b6" stroke-width="3"/>
+<text x="904" y="197" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="28" font-weight="700" fill="#f8fafc" text-anchor="start">4. Auditable prompt</text>
+<text x="904" y="235" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="400" fill="#cbd5e1" text-anchor="start">System / developer / data layers</text>
+<text x="904" y="266" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="400" fill="#cbd5e1" text-anchor="start">Untrusted-input boundary</text>
+<text x="904" y="297" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="400" fill="#cbd5e1" text-anchor="start">Strict JSON Schema</text>
+<text x="904" y="328" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="400" fill="#cbd5e1" text-anchor="start">Prompt + input SHA-256</text>
+<text x="904" y="359" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="400" fill="#cbd5e1" text-anchor="start">Evidence-ID allowlist</text>
+<text x="904" y="390" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="400" fill="#cbd5e1" text-anchor="start">Versioned prompt changelog</text>
+<rect x="880" y="480" width="325" height="210" rx="18" fill="#172033" stroke="#f59e0b" stroke-width="3"/>
+<text x="904" y="522" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="28" font-weight="700" fill="#f8fafc" text-anchor="start">5. Structured generation</text>
+<text x="904" y="560" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="400" fill="#cbd5e1" text-anchor="start">Offline deterministic adapter</text>
+<text x="904" y="591" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="400" fill="#cbd5e1" text-anchor="start">Provider-neutral LLM interface</text>
+<text x="904" y="622" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="400" fill="#cbd5e1" text-anchor="start">Pydantic output validation</text>
+<text x="904" y="653" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="400" fill="#cbd5e1" text-anchor="start">Invented citation filtering</text>
+<rect x="1300" y="250" width="250" height="285" rx="18" fill="#172033" stroke="#4ade80" stroke-width="3"/>
+<text x="1324" y="292" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="28" font-weight="700" fill="#f8fafc" text-anchor="start">6. Policy + analyst</text>
+<text x="1324" y="330" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="400" fill="#cbd5e1" text-anchor="start">P1 / security review</text>
+<text x="1324" y="361" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="400" fill="#cbd5e1" text-anchor="start">Injection review</text>
+<text x="1324" y="392" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="400" fill="#cbd5e1" text-anchor="start">No evidence review</text>
+<text x="1324" y="423" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="400" fill="#cbd5e1" text-anchor="start">Automation forced OFF</text>
+<text x="1324" y="454" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="400" fill="#cbd5e1" text-anchor="start">Analyst owns decision</text>
+<text x="1324" y="485" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="400" fill="#cbd5e1" text-anchor="start">API + Streamlit output</text>
+<path d="M370,235 L460,235" stroke="#94a3b8" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+<text x="415.0" y="225.0" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="18" font-weight="600" fill="#94a3b8" text-anchor="middle">sanitized input</text>
+<path d="M780,235 L880,255" stroke="#94a3b8" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+<text x="830.0" y="235.0" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="18" font-weight="600" fill="#94a3b8" text-anchor="middle">prediction</text>
+<path d="M780,485 L880,330" stroke="#94a3b8" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+<text x="830.0" y="397.5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="18" font-weight="600" fill="#94a3b8" text-anchor="middle">evidence</text>
+<path d="M1042,415 L1042,480" stroke="#94a3b8" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+<text x="1042.0" y="437.5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="18" font-weight="600" fill="#94a3b8" text-anchor="middle">prompt package</text>
+<path d="M1205,585 L1300,430" stroke="#94a3b8" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+<text x="1252.5" y="497.5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="18" font-weight="600" fill="#94a3b8" text-anchor="middle">validated advice</text>
+<path d="M1205,310 L1300,335" stroke="#94a3b8" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+<text x="1252.5" y="312.5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="18" font-weight="600" fill="#94a3b8" text-anchor="middle">audit state</text>
+<text x="800" y="765" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="25" font-weight="700" fill="#f8fafc" text-anchor="middle">Application policy is outside the model and cannot be weakened by provider output.</text>
+<rect x="170" y="805" width="250" height="52" rx="26" fill="#111827" stroke="#0ea5e9" stroke-width="2"/>
+<text x="295" y="839" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#e2e8f0" text-anchor="middle">No production data</text>
+<rect x="470" y="805" width="250" height="52" rx="26" fill="#111827" stroke="#22c55e" stroke-width="2"/>
+<text x="595" y="839" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#e2e8f0" text-anchor="middle">No execution tools</text>
+<rect x="760" y="805" width="250" height="52" rx="26" fill="#111827" stroke="#a855f7" stroke-width="2"/>
+<text x="885" y="839" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#e2e8f0" text-anchor="middle">CI regression gate</text>
+<rect x="1050" y="805" width="250" height="52" rx="26" fill="#111827" stroke="#f59e0b" stroke-width="2"/>
+<text x="1175" y="839" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#e2e8f0" text-anchor="middle">Manual fallback</text>
+</svg>

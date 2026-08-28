@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="720" viewBox="0 0 1400 720">
+<defs><linearGradient id="bg2" x1="0" x2="1"><stop offset="0" stop-color="#08131f"/><stop offset="1" stop-color="#162032"/></linearGradient></defs>
+<rect width="1400" height="720" fill="url(#bg2)"/>
+
+<text x="700" y="62" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="40" font-weight="800" fill="#f8fafc" text-anchor="middle">Prompt &amp; RAG Contract Evaluation</text>
+<text x="700" y="102" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="500" fill="#94a3b8" text-anchor="middle">Deterministic engineering invariants — not a production LLM quality claim</text>
+<circle cx="260" cy="310" r="145" fill="#102a24" stroke="#34d399" stroke-width="14"/>
+<text x="260" y="300" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="62" font-weight="800" fill="#ecfdf5" text-anchor="middle">10 / 10</text>
+<text x="260" y="345" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="25" font-weight="600" fill="#a7f3d0" text-anchor="middle">cases passed</text>
+<text x="260" y="575" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="600" fill="#94a3b8" text-anchor="middle">Reference suite v1.0.0</text>
+<rect x="485" y="162" width="390" height="92" rx="14" fill="#172033" stroke="#334155" stroke-width="2"/>
+<circle cx="516" cy="193" r="16" fill="#10b981"/>
+<text x="516" y="200" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="900" fill="#ffffff" text-anchor="middle">✓</text>
+<text x="545" y="193" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="22" font-weight="700" fill="#f8fafc" text-anchor="start">Sensitive-data redaction</text>
+<text x="545" y="224" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#94a3b8" text-anchor="start">PII and secret patterns masked</text>
+<rect x="915" y="162" width="390" height="92" rx="14" fill="#172033" stroke="#334155" stroke-width="2"/>
+<circle cx="946" cy="193" r="16" fill="#10b981"/>
+<text x="946" y="200" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="900" fill="#ffffff" text-anchor="middle">✓</text>
+<text x="975" y="193" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="22" font-weight="700" fill="#f8fafc" text-anchor="start">Injection handling</text>
+<text x="975" y="224" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#94a3b8" text-anchor="start">Direct and retrieved-context signals</text>
+<rect x="485" y="284" width="390" height="92" rx="14" fill="#172033" stroke="#334155" stroke-width="2"/>
+<circle cx="516" cy="315" r="16" fill="#10b981"/>
+<text x="516" y="322" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="900" fill="#ffffff" text-anchor="middle">✓</text>
+<text x="545" y="315" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="22" font-weight="700" fill="#f8fafc" text-anchor="start">Domain retrieval</text>
+<text x="545" y="346" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#94a3b8" text-anchor="start">Expected runbook in evidence set</text>
+<rect x="915" y="284" width="390" height="92" rx="14" fill="#172033" stroke="#334155" stroke-width="2"/>
+<circle cx="946" cy="315" r="16" fill="#10b981"/>
+<text x="946" y="322" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="900" fill="#ffffff" text-anchor="middle">✓</text>
+<text x="975" y="315" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="22" font-weight="700" fill="#f8fafc" text-anchor="start">Citation discipline</text>
+<text x="975" y="346" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#94a3b8" text-anchor="start">Only supplied evidence IDs retained</text>
+<rect x="485" y="406" width="390" height="92" rx="14" fill="#172033" stroke="#334155" stroke-width="2"/>
+<circle cx="516" cy="437" r="16" fill="#10b981"/>
+<text x="516" y="444" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="900" fill="#ffffff" text-anchor="middle">✓</text>
+<text x="545" y="437" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="22" font-weight="700" fill="#f8fafc" text-anchor="start">Human review</text>
+<text x="545" y="468" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#94a3b8" text-anchor="start">P1, security and injection gates</text>
+<rect x="915" y="406" width="390" height="92" rx="14" fill="#172033" stroke="#334155" stroke-width="2"/>
+<circle cx="946" cy="437" r="16" fill="#10b981"/>
+<text x="946" y="444" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="900" fill="#ffffff" text-anchor="middle">✓</text>
+<text x="975" y="437" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="22" font-weight="700" fill="#f8fafc" text-anchor="start">No autonomous execution</text>
+<text x="975" y="468" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#94a3b8" text-anchor="start">Application policy forces false</text>
+<rect x="485" y="528" width="390" height="92" rx="14" fill="#172033" stroke="#334155" stroke-width="2"/>
+<circle cx="516" cy="559" r="16" fill="#10b981"/>
+<text x="516" y="566" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="900" fill="#ffffff" text-anchor="middle">✓</text>
+<text x="545" y="559" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="22" font-weight="700" fill="#f8fafc" text-anchor="start">Instruction/data separation</text>
+<text x="545" y="590" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#94a3b8" text-anchor="start">Ticket and context remain untrusted</text>
+<rect x="915" y="528" width="390" height="92" rx="14" fill="#172033" stroke="#334155" stroke-width="2"/>
+<circle cx="946" cy="559" r="16" fill="#10b981"/>
+<text x="946" y="566" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="900" fill="#ffffff" text-anchor="middle">✓</text>
+<text x="975" y="559" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="22" font-weight="700" fill="#f8fafc" text-anchor="start">Structured output</text>
+<text x="975" y="590" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#94a3b8" text-anchor="start">Schema and prompt version preserved</text>
+<text x="700" y="675" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#e2e8f0" text-anchor="middle">The suite fails CI when a checked contract regresses.</text>
+</svg>

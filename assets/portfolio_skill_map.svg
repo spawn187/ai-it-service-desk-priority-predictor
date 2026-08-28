@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+<defs><linearGradient id="bg3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#07131f"/><stop offset="1" stop-color="#141b2d"/></linearGradient></defs>
+<rect width="1600" height="900" fill="url(#bg3)"/>
+
+<text x="800" y="52" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="40" font-weight="800" fill="#f8fafc" text-anchor="middle">Portfolio Evidence Map</text>
+<text x="800" y="87" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="500" fill="#94a3b8" text-anchor="middle">One project, multiple role-relevant proof points</text>
+<line x1="800" y1="485" x2="405" y2="390" stroke="#475569" stroke-width="3"/>
+<line x1="800" y1="485" x2="800" y2="400" stroke="#475569" stroke-width="3"/>
+<line x1="800" y1="485" x2="1195" y2="390" stroke="#475569" stroke-width="3"/>
+<line x1="800" y1="485" x2="535" y2="590" stroke="#475569" stroke-width="3"/>
+<line x1="800" y1="485" x2="1065" y2="590" stroke="#475569" stroke-width="3"/>
+<circle cx="285" cy="300" r="150" fill="#172033" stroke="#38bdf8" stroke-width="4"/>
+<text x="285" y="252" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="26" font-weight="800" fill="#f8fafc" text-anchor="middle">AI / ML Engineering</text>
+<text x="285" y="297" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="20" font-weight="500" fill="#cbd5e1" text-anchor="middle">• data pipeline</text>
+<text x="285" y="329" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="20" font-weight="500" fill="#cbd5e1" text-anchor="middle">• model comparison</text>
+<text x="285" y="361" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="20" font-weight="500" fill="#cbd5e1" text-anchor="middle">• metrics</text>
+<text x="285" y="393" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="20" font-weight="500" fill="#cbd5e1" text-anchor="middle">• explainability</text>
+<circle cx="800" cy="285" r="150" fill="#172033" stroke="#f472b6" stroke-width="4"/>
+<text x="800" y="237" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="26" font-weight="800" fill="#f8fafc" text-anchor="middle">Prompt Engineering</text>
+<text x="800" y="282" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="20" font-weight="500" fill="#cbd5e1" text-anchor="middle">• instruction hierarchy</text>
+<text x="800" y="314" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="20" font-weight="500" fill="#cbd5e1" text-anchor="middle">• JSON schema</text>
+<text x="800" y="346" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="20" font-weight="500" fill="#cbd5e1" text-anchor="middle">• version + hashes</text>
+<text x="800" y="378" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="20" font-weight="500" fill="#cbd5e1" text-anchor="middle">• regression cases</text>
+<circle cx="1315" cy="300" r="150" fill="#172033" stroke="#a78bfa" stroke-width="4"/>
+<text x="1315" y="252" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="26" font-weight="800" fill="#f8fafc" text-anchor="middle">LLMOps / Responsible AI</text>
+<text x="1315" y="297" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="20" font-weight="500" fill="#cbd5e1" text-anchor="middle">• guardrails</text>
+<text x="1315" y="329" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="20" font-weight="500" fill="#cbd5e1" text-anchor="middle">• evaluation</text>
+<text x="1315" y="361" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="20" font-weight="500" fill="#cbd5e1" text-anchor="middle">• monitoring</text>
+<text x="1315" y="393" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="20" font-weight="500" fill="#cbd5e1" text-anchor="middle">• rollback</text>
+<circle cx="420" cy="665" r="145" fill="#172033" stroke="#4ade80" stroke-width="4"/>
+<text x="420" y="617" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="26" font-weight="800" fill="#f8fafc" text-anchor="middle">ITSM / Microsoft Cloud</text>
+<text x="420" y="662" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="20" font-weight="500" fill="#cbd5e1" text-anchor="middle">• incident policy</text>
+<text x="420" y="694" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="20" font-weight="500" fill="#cbd5e1" text-anchor="middle">• M365 runbooks</text>
+<text x="420" y="726" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="20" font-weight="500" fill="#cbd5e1" text-anchor="middle">• human review</text>
+<text x="420" y="758" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="20" font-weight="500" fill="#cbd5e1" text-anchor="middle">• service ownership</text>
+<circle cx="1180" cy="665" r="145" fill="#172033" stroke="#f59e0b" stroke-width="4"/>
+<text x="1180" y="617" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="26" font-weight="800" fill="#f8fafc" text-anchor="middle">AI Product / Transformation</text>
+<text x="1180" y="662" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="20" font-weight="500" fill="#cbd5e1" text-anchor="middle">• business case</text>
+<text x="1180" y="694" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="20" font-weight="500" fill="#cbd5e1" text-anchor="middle">• KPI tree</text>
+<text x="1180" y="726" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="20" font-weight="500" fill="#cbd5e1" text-anchor="middle">• shadow mode</text>
+<text x="1180" y="758" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="20" font-weight="500" fill="#cbd5e1" text-anchor="middle">• RACI + adoption</text>
+<circle cx="800" cy="485" r="92" fill="#0f2c3a" stroke="#22d3ee" stroke-width="5"/>
+<text x="800" y="478" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="29" font-weight="800" fill="#f8fafc" text-anchor="middle">Norbert</text>
+<text x="800" y="514" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21" font-weight="600" fill="#a5f3fc" text-anchor="middle">hybrid profile</text>
+<text x="800" y="870" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#e2e8f0" text-anchor="middle">Inspectable code + measurable evidence + honest limitations + operating model</text>
+</svg>

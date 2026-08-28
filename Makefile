@@ -1,4 +1,4 @@
-.PHONY: install install-dev data train quick-train api dashboard test lint format docker clean
+.PHONY: install install-dev data train quick-train api dashboard copilot-demo prompt-eval test lint format quality docker clean
 
 install:
 	python -m pip install -e .
@@ -21,6 +21,12 @@ api:
 dashboard:
 	streamlit run app/streamlit_app.py
 
+copilot-demo:
+	python scripts/run_copilot_demo.py
+
+prompt-eval:
+	python scripts/run_prompt_evals.py --fail-on-regression
+
 test:
 	pytest -q
 
@@ -29,6 +35,8 @@ lint:
 
 format:
 	ruff format .
+
+quality: lint test prompt-eval
 
 docker:
 	docker compose up --build
