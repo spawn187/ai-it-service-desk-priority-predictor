@@ -1,0 +1,40 @@
+name: Bootstrap portfolio v2
+
+on:
+  push:
+    branches:
+      - portfolio/ai-service-desk-copilot-v2
+    paths:
+      - ".github/workflows/bootstrap-portfolio-v2.yml"
+      - "tools/bootstrap_portfolio_v2.py"
+      - "tools/payload_parts/**"
+
+permissions:
+  contents: write
+
+jobs:
+  materialize-reviewed-upgrade:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@v6
+        with:
+          ref: portfolio/ai-service-desk-copilot-v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Materialize reviewed portfolio files
+        run: python tools/bootstrap_portfolio_v2.py
+
+      - name: Commit reviewed upgrade
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add --all
+          git commit -m "feat: add guarded AI Service Desk Copilot portfolio v2"
+          git push origin HEAD:portfolio/ai-service-desk-copilot-v2
