@@ -1,6 +1,7 @@
-"""AI-powered IT service desk ticket prioritization package."""
+"""Hybrid AI/ML service-desk priority and copilot package."""
 
+from .copilot import ServiceDeskCopilot
 from .inference import TicketPriorityPredictor
 
-__all__ = ["TicketPriorityPredictor"]
-__version__ = "1.0.0"
+__all__ = ["ServiceDeskCopilot", "TicketPriorityPredictor"]
+__version__ = "2.0.0"

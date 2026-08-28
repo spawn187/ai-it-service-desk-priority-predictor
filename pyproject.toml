@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "it-ticket-priority"
-version = "1.0.0"
-description = "End-to-end AI/ML portfolio project for IT service desk ticket priority prediction"
+version = "2.0.0"
+description = "Hybrid AI/ML, RAG, prompt-engineering, and LLMOps portfolio for IT service desk decision support"
 readme = "README.md"
 requires-python = ">=3.11,<3.14"
 license = { text = "MIT" }
@@ -16,6 +16,10 @@ keywords = [
   "machine-learning",
   "nlp",
   "mlops",
+  "llmops",
+  "prompt-engineering",
+  "retrieval-augmented-generation",
+  "responsible-ai",
   "fastapi",
   "streamlit",
   "it-service-management"

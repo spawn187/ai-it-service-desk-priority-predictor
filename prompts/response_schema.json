@@ -1,0 +1,129 @@
+{
+  "$defs": {
+    "RecommendedAction": {
+      "properties": {
+        "step": {
+          "title": "Step",
+          "type": "string"
+        },
+        "rationale": {
+          "title": "Rationale",
+          "type": "string"
+        },
+        "risk": {
+          "default": "low",
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ],
+          "title": "Risk",
+          "type": "string"
+        },
+        "source_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Source Ids",
+          "type": "array"
+        },
+        "requires_approval": {
+          "default": true,
+          "title": "Requires Approval",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "step",
+        "rationale"
+      ],
+      "title": "RecommendedAction",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Validated structured output expected from any assistant implementation.",
+  "properties": {
+    "summary": {
+      "title": "Summary",
+      "type": "string"
+    },
+    "incident_type": {
+      "title": "Incident Type",
+      "type": "string"
+    },
+    "recommended_actions": {
+      "items": {
+        "$ref": "#/$defs/RecommendedAction"
+      },
+      "title": "Recommended Actions",
+      "type": "array"
+    },
+    "escalation": {
+      "title": "Escalation",
+      "type": "string"
+    },
+    "assumptions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Assumptions",
+      "type": "array"
+    },
+    "missing_information": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Missing Information",
+      "type": "array"
+    },
+    "citations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Citations",
+      "type": "array"
+    },
+    "confidence": {
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Confidence",
+      "type": "number"
+    },
+    "human_review_required": {
+      "title": "Human Review Required",
+      "type": "boolean"
+    },
+    "automation_allowed": {
+      "default": false,
+      "title": "Automation Allowed",
+      "type": "boolean"
+    },
+    "prohibited_actions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Prohibited Actions",
+      "type": "array"
+    },
+    "prompt_version": {
+      "title": "Prompt Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "summary",
+    "incident_type",
+    "recommended_actions",
+    "escalation",
+    "assumptions",
+    "missing_information",
+    "citations",
+    "confidence",
+    "human_review_required",
+    "prohibited_actions",
+    "prompt_version"
+  ],
+  "title": "CopilotAdvice",
+  "type": "object"
+}
