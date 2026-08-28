@@ -5,7 +5,6 @@ from fastapi.testclient import TestClient
 import api.main as api_main
 from it_ticket_priority.inference import TicketPriorityPredictor
 
-
 PAYLOAD = {
     "description": "A complete warehouse outage is blocking all scanning transactions.",
     "category": "business_application",

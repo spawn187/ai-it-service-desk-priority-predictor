@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from it_ticket_priority.inference import TicketPriorityPredictor
 
-
 EXAMPLE = {
     "description": (
         "The logistics application cannot process orders. All warehouse processing "

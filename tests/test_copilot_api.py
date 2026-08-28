@@ -4,7 +4,6 @@ import api.main as api_main
 from it_ticket_priority.copilot.evaluation import EvaluationPredictor
 from it_ticket_priority.copilot.orchestrator import ServiceDeskCopilot
 
-
 PAYLOAD = {
     "description": "Warehouse WAN and DNS outage blocks all scanning and order processing.",
     "category": "network",
