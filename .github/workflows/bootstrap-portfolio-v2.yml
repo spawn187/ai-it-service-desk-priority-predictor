@@ -38,3 +38,5 @@ jobs:
           git add --all
           git commit -m "feat: add guarded AI Service Desk Copilot portfolio v2"
           git push origin HEAD:portfolio/ai-service-desk-copilot-v2
+
+# Retry after verifying the staged archive checksum.
