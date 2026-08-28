@@ -27,7 +27,8 @@ def main() -> None:
         related_incidents_30d=6,
     )
     decision = ServiceDeskCopilot(EvaluationPredictor()).triage(ticket)
-    print(json.dumps(decision.model_dump(), indent=2, ensure_ascii=False))
+    # ASCII escaping keeps the CLI JSON portable across Windows legacy code pages.
+    print(json.dumps(decision.model_dump(), indent=2, ensure_ascii=True))
 
 
 if __name__ == "__main__":
