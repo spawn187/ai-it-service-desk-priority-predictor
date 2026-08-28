@@ -10,6 +10,9 @@ import tarfile
 from pathlib import Path
 
 
+WORKFLOW_PREFIX = ".github/workflows/"
+
+
 def main() -> None:
     root = Path(__file__).resolve().parents[1]
     parts_dir = root / "tools" / "payload_parts"
@@ -19,7 +22,7 @@ def main() -> None:
     archive = lzma.decompress(base64.b64decode(encoded))
     with tarfile.open(fileobj=io.BytesIO(archive), mode="r:") as tar:
         for member in tar.getmembers():
-            if not member.isfile():
+            if not member.isfile() or member.name.startswith(WORKFLOW_PREFIX):
                 continue
             target = (root / member.name).resolve()
             if root.resolve() not in target.parents:
@@ -31,13 +34,9 @@ def main() -> None:
             target.write_bytes(source.read())
 
     shutil.rmtree(parts_dir)
-    for relative in (
-        "tools/bootstrap_portfolio_v2.py",
-        ".github/workflows/bootstrap-portfolio-v2.yml",
-    ):
-        candidate = root / relative
-        if candidate.exists():
-            candidate.unlink()
+    bootstrap = root / "tools/bootstrap_portfolio_v2.py"
+    if bootstrap.exists():
+        bootstrap.unlink()
 
 
 if __name__ == "__main__":
