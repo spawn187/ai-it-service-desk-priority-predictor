@@ -35,6 +35,15 @@ jobs:
       - name: Run tests
         run: pytest -q --cov=it_ticket_priority --cov-report=term-missing
 
+      - name: Prompt and RAG contract quality gate
+        run: |
+          python scripts/run_prompt_evals.py \
+            --output /tmp/prompt_eval_metrics.json \
+            --fail-on-regression
+
+      - name: Offline copilot smoke test
+        run: python scripts/run_copilot_demo.py > /tmp/copilot_demo.json
+
       - name: Training smoke test
         run: |
           python scripts/train_model.py \
